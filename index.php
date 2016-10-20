@@ -9,17 +9,35 @@ table, th, td {
 </head>
 <body>
 <?php
-function build_table($array){
+
+function readCSV($csvfile){
+$handle = fopen($csvfile, 'r');
+while (!feof($handle)) {
+	$line[] = fgetcsv($handle, 1024);
+}	
+fclose($handle);
+return $line;
+}
+
+$csvfile = 'text.csv';
+
+$csv = readsvc($csvfile);
+echo '<pre>';
+print_r($csv);
+echo '</pre>';
+
+
+function build_table($csv){
 // begins table
 $html = '<table>';
 // header 
 $html .= '<tr>';
-foreach($array[0] as $key=>$value){
+foreach($csv[0] as $key=>$value){
 	$html .= '<th>' . $key . '</th>';
 }
 $html .= '</tr>';
 // data
-foreach ($array as $key=>$value){
+foreach ($csv as $key=>$value){
 	$html .= '<tr>';
 	foreach($value as $key2=>$value2){
 		$html .= '<td>'	. $value2 .'</td>';
@@ -30,12 +48,8 @@ $html .= '</tr>';
 $html .= '</table>';
 return $html;
 }
-$array = array(
-	array('key'=>'word1', 'value'=>1),
-	array('key'=>'word2', 'value'=>2),
-	array('key'=>'word3', 'value'=>3),
-);
-echo build_table($array);
+
+echo build_table($csv);
 ?>
 
 </body>										</html>
